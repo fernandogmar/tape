@@ -8,6 +8,7 @@ var readFileSync = require('fs').readFileSync;
 var parseOpts = require('minimist');
 var glob = require('glob');
 var ignore = require('dotignore');
+var jspm = require('jspm');
 
 var opts = parseOpts(process.argv.slice(2), {
     alias: { r: 'require', i: 'ignore' },
@@ -49,9 +50,11 @@ opts._.forEach(function (arg) {
     if (!Array.isArray(files)) {
         throw new TypeError('unknown error: glob.sync did not return an array or throw. Please report this.');
     }
-
+    
+    var SystemJS = new jspm.Loader();
     files.filter(function (file) { return !matcher || !matcher.shouldIgnore(file); }).forEach(function (file) {
-        require(resolvePath(cwd, file));
+        //require(resolvePath(cwd, file));
+        SystemJS.import(resolvePath(cwd, file));//workaround to load tests from node using jspm aswell, TODO how about `npx jspm run tape`??
     });
 });
 

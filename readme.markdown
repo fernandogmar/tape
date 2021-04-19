@@ -1,3 +1,7 @@
+## NOTES
+
+- `bin/tape` has been modified to be used to test jspm projects
+
 # tape
 
 tap-producing test harness for node and browsers
